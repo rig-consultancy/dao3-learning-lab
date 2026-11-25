@@ -237,6 +237,41 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
   .garrow span{animation:grow2 .6s ease both}
   @keyframes grow2{from{width:0}}
 }
+
+/* ---- more animations ---- */
+.gt{border-bottom:1.5px dotted var(--accent);cursor:help;position:relative}
+.gt:hover::after,.gt:focus::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 6px);z-index:40;width:250px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:400;line-height:1.4;padding:8px 10px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.2);white-space:normal}
+.gt:focus{outline:none;background:var(--accent-soft)}
+.cutline{animation:cutflash 1.2s ease both}
+@keyframes cutflash{0%{opacity:0}30%{opacity:1}60%{opacity:.35}100%{opacity:.7}}
+.segin{animation:segin .4s ease both}
+@keyframes segin{from{opacity:0}}
+#hm{display:grid;grid-template-columns:minmax(0,1.3fr) auto minmax(0,1fr);gap:14px;align-items:center}
+.hchips{display:flex;flex-direction:column;gap:8px}
+.hchip{padding:7px 10px;border-radius:9px;background:var(--panel);border:1px solid var(--line);font-size:13px;transition:transform .5s cubic-bezier(.5,0,.3,1),opacity .5s}
+.hchip.key{border-color:var(--good)}
+.hchip.feed{transform:translateX(30px) scale(.94);opacity:.55}
+.hchip.nokey{text-decoration:line-through;border-color:var(--bad);color:var(--bad)}
+.hbox{width:120px;height:90px;border-radius:14px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:13px;padding:6px}
+.hbox.busy{animation:shake .25s linear infinite}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+.hout{min-height:40px;padding:8px 10px;border-radius:9px;background:var(--code);word-break:break-all;font-size:13px}
+@media (max-width:860px){#hm{grid-template-columns:minmax(0,1fr)}.hbox{width:100%;height:50px}}
+.pw rect{fill:var(--panel);stroke:var(--line);stroke-width:1.5;transition:all .4s}
+.pw.path rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:3}
+.pw.sib rect{fill:var(--warn-soft);stroke:var(--warn);stroke-width:3}
+.pw.good rect{fill:var(--good-soft);stroke:var(--good)}
+.pw.badn rect{fill:var(--bad-soft);stroke:var(--bad)}
+.pwstep{padding:5px 10px;border-left:3px solid var(--accent);margin:4px 0;background:var(--bg);border-radius:0 8px 8px 0;font-size:14px;animation:fadeUp .4s ease both}
+.dv{display:flex;gap:10px;align-items:flex-end;justify-content:space-around;flex-wrap:wrap;padding-top:8px}
+.dvg{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:84px}
+.dvbars{display:flex;gap:6px;align-items:flex-end;height:125px}
+.dvb{width:30px;border-radius:6px 6px 0 0;position:relative;transition:height .9s cubic-bezier(.3,.7,.2,1)}
+.dvb span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:11px;white-space:nowrap}
+.dvb.obs{background:var(--muted);opacity:.55}
+.dvb.pred{background:var(--accent)}
+.dvlab{font-size:13px;font-weight:600}
+.blk{animation:fadeUp .35s ease both}
 </style>
 </head>
 <body>
@@ -338,6 +373,13 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
     <p class="note">Move the sliders to give each wallet more or fewer tokens. Watch the largest wallet's share.</p>
     <div id="voteSim"></div>
   </div>
+  <div class="card widget">
+    <div class="wtitle">Watch a vote unfold, hour by hour <span class="toy">toy vote</span></div>
+    <div class="row" style="margin-bottom:6px"><button class="primary" id="vsPlay" style="flex:0 0 auto">▶ Play the vote</button><input type="range" id="vsScrub" min="0" max="72" step="0.5" value="0" aria-label="Hour of the vote"></div>
+    <svg id="vsStream" viewBox="0 0 700 172" width="100%"></svg>
+    <p id="vsMsg" style="margin:6px 0 0;min-height:48px"></p>
+  </div>
+
 
   <h3>How common is capture in real DAOs?</h3>
   <p>In the 42,049 proposals the project analysed, <b>17.2%</b> were captured <span class="real">real</span>. With a 33% threshold it would be 34.8%, and with 66% it would be 8.9%. One in six is frequent enough to learn from and rare enough to be worth a warning.</p>
@@ -636,6 +678,14 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
     <text x="678" y="50" text-anchor="middle" font-size="13" font-weight="600">Test (used once)</text><text x="678" y="67" text-anchor="middle" font-size="12">2023 · 10,819</text>
     <text x="10" y="100" font-size="12.5" class="muted">time →  Proposals still being voted on at a boundary are removed, so no outcome leaks across.</text>
   </svg>
+
+  <div class="card widget">
+    <div class="wtitle">Watch the split happen <span class="toy">54 made-up proposals</span></div>
+
+    <div class="row" style="margin-bottom:6px"><button class="primary" id="tsPlay" style="flex:0 0 auto">▶ Play</button><button id="tsAll" style="flex:0 0 auto">Show all</button></div>
+    <svg id="tsSvg" viewBox="0 0 700 182" width="100%"></svg>
+    <p id="tsOut" style="margin:6px 0 0"></p>
+  </div>
   <p>Every tuning choice, including <i>which model to deploy</i>, is made on validation data. The test year is used once, at the end. Half of the test proposals (49.9%) come from DAOs the model never saw in training.</p>
   <div class="quiz" data-quiz="b3"></div>
   <div class="pager"></div>
@@ -656,7 +706,16 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
       <div><b>Attacker's plan</b><p class="note">Hash every public address and look for matches</p><button class="primary" id="prAttack">Run dictionary attack</button><div id="prRes" style="margin-top:8px"></div></div>
     </div>
   </div>
-  <div class="grid2">
+  
+  <div class="card widget">
+    <div class="wtitle">The secret-code machine <span class="real">real HMAC</span></div>
+
+    <p class="note">Three ingredients go in. Run it as the data controller, then as an attacker who has everything except the key.</p>
+    <div id="hm"><div class="hchips" id="hmChips"></div><div class="hbox" id="hmBox"><span id="hmBoxLab">HMAC-SHA256</span></div><div class="hout mono" id="hmOut"></div></div>
+    <div class="row" style="margin-top:8px"><button class="primary" id="hmRun" style="flex:0 0 auto">▶ Run with the key</button><button id="hmAtk" style="flex:0 0 auto">▶ Run as attacker (no key)</button></div>
+    <p id="hmMsg" style="margin:8px 0 0;min-height:44px"></p>
+  </div>
+<div class="grid2">
     <div class="callout bad"><b>S3.1, old method</b> <span class="real">real</span><br>All <b>5,052,404 wallets re-identified (100%)</b>. Hashing a public identifier without a secret gives no protection, because anyone can repeat the hash.</div>
     <div class="callout good"><b>S3.2, framework method</b> <span class="real">real</span><br>The same attack finds <b>0 matches</b>. 671,039 people who voted in more than one DAO can no longer be linked (0 links). Every voting measure is <b>identical</b> on all 119,692 proposals compared.</div>
   </div>
@@ -723,7 +782,17 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
   <div id="modelChart"></div>
   <p class="note">Real 2023 test results (10,819 proposals). The bracket on XGBoost is its 95% confidence range.</p>
   <div class="callout key"><b>Why XGBoost and not Random Forest, when RF scored 0.902 on the test?</b> Because the deployed model was chosen <b>on validation data only</b>, where XGBoost won narrowly. Picking the test winner afterwards would be cheating. The two are effectively tied, and on Google Colab (Linux) RF is sometimes selected. Lesson D3 covers this.</div>
-  <h2>How early can it warn? (S4.4)</h2>
+  <h2>How the model learns: many small trees</h2>
+  <p>XGBoost doesn't learn in one go. It adds small decision trees one at a time; each new tree looks at the mistakes left over and nudges the predictions to fix them. Press play and watch the blue risk line bend towards the data while the error falls.</p>
+  <div class="card widget">
+    <div class="wtitle">Grow a boosted model <span class="toy">one input, 140 made-up proposals</span> <span class="real">real boosting maths</span></div>
+
+    <div class="row" style="margin-bottom:6px"><button class="primary" id="bPlay" style="flex:0 0 auto">▶ Grow 40 trees</button><button id="bOne" style="flex:0 0 auto">+1 tree</button><button id="bReset" style="flex:0 0 auto">Reset</button></div>
+    <svg id="bsvg" viewBox="0 0 700 196" width="100%"></svg>
+    <div class="grid3" id="bOut"></div>
+    <p class="note">Each tree here asks one question ("is the largest share above 0.45?"). The real model uses many deeper trees over all 18 inputs and the DAO history, but grows in exactly this way.</p>
+  </div>
+<h2>How early can it warn? (S4.4)</h2>
   <div id="horizonChart"></div>
   <p>The AI helps most when the warning is earliest, which is when members have the most time to act.</p>
   <h2>Privacy costs almost nothing (S4.6)</h2>
@@ -807,6 +876,15 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
     <div class="tree"><svg id="mkSvg" viewBox="0 0 760 210" width="100%"></svg></div>
     <div id="mkOut"></div>
   </div>
+
+  <div class="card widget">
+    <div class="wtitle">Check one decision, step by step <span class="real">real SHA-256</span></div>
+
+    <div class="row" style="margin-bottom:6px"><label style="flex:0 0 auto">Record <select id="pwSel" style="width:auto;display:inline-block"><option value="0">1 · P-1042</option><option value="1">2 · P-1043</option><option value="2">3 · P-1044</option><option value="3">4 · P-1045</option></select></label><label style="flex:0 0 auto"><input type="checkbox" id="pwTam" style="width:auto"> tamper with it</label><button class="primary" id="pwPlay" style="flex:0 0 auto">▶ Verify</button></div>
+    <div class="tree"><svg id="pwSvg" viewBox="0 0 760 200" width="100%"></svg></div>
+    <div id="pwSteps"></div>
+    <p class="note"><span style="color:var(--accent)">■</span> your path · <span style="color:var(--warn)">■</span> hashes supplied by the proof. You only need the record, two sibling hashes and the stored root.</p>
+  </div>
   <p>To prove one decision belongs to a batch, you need only its <b>sibling hashes</b> on the way up (the "proof"). For a million decisions that's just <b>20 hashes (640 bytes)</b>, checked in about 0.1 ms <span class="real">real</span>.</p>
   <h2>What it costs</h2>
   <p>Ethereum charges <b>gas</b> for computation. Batching changes the cost dramatically <span class="real">real gas</span>:</p>
@@ -846,6 +924,14 @@ pre.code .cl.on{background:var(--warn-soft);font-weight:600}
     <div class="row" id="fairBtns"></div>
     <svg id="fairSvg" viewBox="0 0 700 300" width="100%"></svg>
     <div id="fairNote" class="callout key"></div>
+  </div>
+
+  <div class="card widget">
+    <div class="wtitle">Predicted vs actual capture, group by group <span class="real">real, S7.2 tables</span></div>
+
+    <p class="note">Grey = what actually happened in 2023. Blue = what the model predicted on average. Switch fixes and watch the blue bars move towards the grey.</p>
+    <div class="row" id="dvBtns" style="margin-bottom:8px"></div>
+    <div class="dv" id="dv"></div>
   </div>
   <p><b>Why trust fix 3?</b> Its settings were fixed before it was tested, and all 9 other reasonable settings tried afterwards also meet the target (worst group 0.026–0.034). Even the upper end of the 95% range stays within 0.05 in every group (at most 0.043). The thesis states openly that fixes 2 and 3 were each designed after the previous one failed. Objective 3 then confirmed fix 3 on newer data (lesson C3).</p>
   <h2>S7.3: the Responsible-AI matrix</h2>
@@ -1089,6 +1175,16 @@ return log.done()   # writes the step, its checks and outputs to reports/step_lo
     <div class="grid3" id="bsOut" style="margin-top:10px"></div>
     <svg id="bsSvg" viewBox="0 0 700 220" width="100%"></svg>
   </div>
+  <div class="card widget">
+    <div class="wtitle">Simulate the batching <span class="toy">random arrivals</span></div>
+
+    <p class="note">Decisions arrive at the real 2023 rate (about 54 a day). They wait in a batch, and the whole batch goes on-chain in one transaction when the window closes.</p>
+    <div class="row" style="margin-bottom:6px"><label style="flex:0 0 auto">Window <select id="bkW" style="width:auto;display:inline-block"><option value="1">1 hour</option><option value="6" selected>6 hours</option><option value="24">24 hours</option></select></label><button class="primary" id="bkPlay" style="flex:0 0 auto">▶ Run 3 days</button></div>
+    <svg id="bkSvg" viewBox="0 0 700 205" width="100%"></svg>
+    <div class="grid3" id="bkOut"></div>
+    <p class="note">Model: about 96,700 gas per batch transaction (the S6.7 average). Compare your result with the measured table above: longer windows mean cheaper decisions but a longer wait.</p>
+  </div>
+
   <ul>
     <li><b>S6.7</b>: the pre-set target for hourly batches was not met (76.7% saving; C2 failed). Daily batches save 98.7% at a median wait of 10.1 hours.</li>
     <li><b>S6.8 (H11 supported)</b>: batching each DAO separately saves only 59.5% daily, because a typical DAO makes about 2 decisions in the test period. The rule is to <b>pool decisions across DAOs</b> into one batch.</li>
@@ -2094,8 +2190,196 @@ INIT.o1c=()=>{
 };
 FTREE.splice(FTREE.findIndex(f=>f[0]==="pipeline/"),0,["review/","folder","Objective 1, the systematic review: PROTOCOL.md (frozen before the search), LOG.md (every step), r2_search.py → r8_assemble.py (search, deduplicate, screen, full text, assess, synthesise, write up), GAP_RECHECK.md, writeup/REVIEW.md."]);
 
+/* ================= MORE INTERACTIVE ANIMATIONS ================= */
+const raf=f=>requestAnimationFrame(f);
+function chain(id,fn){const old=INIT[id];INIT[id]=()=>{old&&old();fn();};}
+function stopOnLeave(id,stop){window.addEventListener("hashchange",()=>{if(current()!==id)stop();});}
+
+/* (a) A1: watch a vote unfold */
+chain("a1",()=>{
+  const r=rng(42),V=[];
+  for(let i=0;i<14;i++)V.push({t:r()*70,w:"W"+(i+1),p:Math.round(40+r()*140)});
+  V.push({t:40,w:"Whale",p:2600}); V.sort((a,b)=>a.t-b.t);
+  const state=T=>{const m={};V.filter(v=>v.t<=T).forEach(v=>m[v.w]=(m[v.w]||0)+v.p);const tot=Object.values(m).reduce((a,b)=>a+b,0);
+    const arr=Object.entries(m).map(([w,p])=>({w,s:tot?p/tot:0})).sort((a,b)=>b.s-a.s);return {arr,top:arr.length?arr[0].s:0,n:Object.keys(m).length};};
+  const X=t=>40+400*t/72,Y=s=>150-120*s;
+  let T=0,run=null;
+  const draw=()=>{const st=state(T);let s=`<line x1="40" x2="440" y1="150" y2="150" stroke="var(--line)"/><line x1="40" x2="440" y1="${Y(.5)}" y2="${Y(.5)}" stroke="var(--bad)" stroke-dasharray="5 4"/><text x="444" y="${Y(.5)+4}" font-size="11" style="fill:var(--bad)">50%</text>`;
+    s+=`<rect x="${X(0)}" y="22" width="${X(24)-X(0)}" height="128" fill="var(--accent-soft)" opacity=".6"/><text x="${X(12)}" y="18" text-anchor="middle" font-size="11" class="muted">AI looks here (24 h)</text>`;
+    let d="";for(let t=0;t<=T;t+=0.5){const v=state(t).top;d+=(d?"L":"M")+X(t).toFixed(1)+" "+Y(v).toFixed(1);} s+=`<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>`;
+    s+=`<circle cx="${X(T)}" cy="${Y(st.top)}" r="5" fill="var(--accent)"/>`;
+    [0,24,48,72].forEach(t=>s+=`<text x="${X(t)}" y="166" text-anchor="middle" font-size="11" class="muted">${t} h</text>`);
+    s+=`<text x="40" y="12" font-size="11.5" font-weight="600">largest wallet's share over time</text>`;
+    st.arr.slice(0,6).forEach((a,i)=>{const y=26+i*22,isW=a.w==="Whale";s+=`<text x="470" y="${y+12}" font-size="11.5" ${isW?'style="fill:var(--bad);font-weight:700"':''}>${a.w}</text><rect x="520" y="${y+2}" width="${Math.max(1,170*a.s)}" height="14" rx="3" fill="${isW?'var(--bad)':'var(--accent)'}" style="transition:width .2s"/><text x="${524+170*a.s}" y="${y+13}" font-size="11">${Math.round(100*a.s)}%</text>`;});
+    s+=`<text x="470" y="12" font-size="11.5" font-weight="600">shares right now</text>`;
+    $("#vsStream").innerHTML=s;
+    const t24=state(24).top;
+    let msg=`Hour <b>${T.toFixed(0)}</b> · ${st.n} wallets have voted · largest share <b>${pct(st.top,0)}</b>. `;
+    if(T<24)msg+="Votes are coming in. Nothing is decided yet.";
+    else if(T<40)msg+=`At 24 h the largest wallet held ${pct(t24,0)}, so the simple "whoever leads now wins" rule says <span class="pill ok">not captured</span>. The AI also weighs the DAO's history and newcomers.`;
+    else msg+=`A <b style="color:var(--bad)">whale arrives at hour 40</b> and ends with ${pct(state(72).top,0)}: <span class="pill no">captured</span>. This "late whale" is why 86.5% of missed captures happen (S9.3).`;
+    $("#vsMsg").innerHTML=msg;};
+  const stop=()=>{run=null;$("#vsPlay").textContent="▶ Play the vote";};
+  $("#vsPlay").onclick=()=>{if(run){stop();return;} if(T>=72)T=0; $("#vsPlay").textContent="❚❚ Pause"; let last=performance.now();
+    run=now=>{if(!run)return;T=Math.min(72,T+(now-last)/1000*7);last=now;draw();if(T>=72){stop();return;}raf(run);};raf(run);};
+  $("#vsScrub").oninput=e=>{stop();T=+e.target.value;draw();};
+  const syncScrub=setInterval(()=>{if(run)$("#vsScrub").value=T;},150);
+  stopOnLeave("a1",stop); draw();
+});
+
+/* (b) B3: temporal split with embargo */
+chain("b3",()=>{
+  const r=rng(9),P=[];for(let i=0;i<54;i++){const o=r()*35.5;P.push({o,c:o+0.15+r()*1.4});}P.sort((a,b)=>a.o-b.o);
+  const B1=18,B2=24,X=m=>30+640*m/37;
+  const cls=p=>(p.o<B1&&p.c>=B1)||(p.o<B2&&p.c>=B2)?"cut":p.o<B1?"train":p.o<B2?"val":"test";
+  const col={train:"var(--accent)",val:"var(--warn)",test:"var(--good)",cut:"var(--bad)"};
+  let k=0,timer=null;
+  const draw=()=>{let s=`<rect x="${X(0)}" y="8" width="${X(B1)-X(0)}" height="150" fill="var(--accent-soft)" opacity=".5"/><rect x="${X(B1)}" y="8" width="${X(B2)-X(B1)}" height="150" fill="var(--warn-soft)" opacity=".6"/><rect x="${X(B2)}" y="8" width="${X(36)-X(B2)}" height="150" fill="var(--good-soft)" opacity=".6"/>`;
+    [[B1,"Jul 2022"],[B2,"Jan 2023"]].forEach(b=>s+=`<line x1="${X(b[0])}" x2="${X(b[0])}" y1="4" y2="162" stroke="var(--ink)" stroke-width="1.5"/><text x="${X(b[0])}" y="176" text-anchor="middle" font-size="11">${b[1]}</text>`);
+    s+=`<text x="${X(9)}" y="22" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--accent)">TRAIN</text><text x="${X(21)}" y="22" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--warn)">VALIDATE</text><text x="${X(30)}" y="22" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--good)">TEST (once)</text>`;
+    const c={train:0,val:0,test:0,cut:0};
+    P.slice(0,k).forEach((p,i)=>{const t=cls(p);c[t]++;const y=34+(i%12)*10.5;
+      s+=`<line class="${t==='cut'?'cutline':'segin'}" x1="${X(p.o)}" x2="${X(p.c)}" y1="${y}" y2="${y}" stroke="${col[t]}" stroke-width="5" stroke-linecap="round"/>`;
+      if(t==="cut")s+=`<text class="cutline" x="${X(p.c)+5}" y="${y+4}" font-size="10" style="fill:var(--bad)">✗ removed</text>`;});
+    $("#tsSvg").innerHTML=s;
+    $("#tsOut").innerHTML=`<span class="pill" style="background:var(--accent-soft);color:var(--accent)">train ${c.train}</span> <span class="pill mid">validate ${c.val}</span> <span class="pill ok">test ${c.test}</span> <span class="pill no">removed ${c.cut}</span> <span class="note">· each bar is one proposal, from opening to closing. A red bar was still being voted on at a boundary, so its outcome would leak into the next period: it's dropped.</span>`;};
+  const stop=()=>{clearInterval(timer);timer=null;$("#tsPlay").textContent="▶ Play";};
+  $("#tsPlay").onclick=()=>{if(timer){stop();return;} if(k>=P.length)k=0; $("#tsPlay").textContent="❚❚ Pause"; timer=setInterval(()=>{k++;draw();if(k>=P.length)stop();},160);};
+  $("#tsAll").onclick=()=>{stop();k=P.length;draw();};
+  stopOnLeave("b3",stop); draw();
+});
+
+/* (c) B5: how boosting learns */
+chain("b5",()=>{
+  const r=rng(17),N=140,D=[];for(let i=0;i<N;i++){const x=r();const pt=1/(1+Math.exp(-(-4.2+7.5*x)));D.push({x,y:r()<pt?1:0,j:r()});}
+  const sig=z=>1/(1+Math.exp(-z)); const mean=D.reduce((a,d)=>a+d.y,0)/N, F0=Math.log(mean/(1-mean)), LR=0.3;
+  let trees=[],timer=null,hist=[];
+  const F=x=>trees.reduce((a,t)=>a+(x<t.th?t.l:t.r),F0);
+  const addTree=()=>{const g=D.map(d=>d.y-sig(F(d.x))),h=D.map(d=>{const p=sig(F(d.x));return p*(1-p);});let best=null;
+    for(let q=1;q<20;q++){const th=q/20;let gl=0,hl=0,gr=0,hr=0;D.forEach((d,i)=>{if(d.x<th){gl+=g[i];hl+=h[i];}else{gr+=g[i];hr+=h[i];}});
+      const gain=(hl?gl*gl/hl:0)+(hr?gr*gr/hr:0);if(!best||gain>best.gain)best={th,gain,l:hl?LR*gl/hl:0,r:hr?LR*gr/hr:0};}
+    trees.push(best);};
+  const metrics=()=>{const ps=D.map(d=>sig(F(d.x)));const ll=-D.reduce((a,d,i)=>a+(d.y?Math.log(ps[i]):Math.log(1-ps[i])),0)/N;
+    const A=auc(ps.filter((_,i)=>D[i].y),ps.filter((_,i)=>!D[i].y));return {ll,A};};
+  const X=x=>62+398*x,Y=p=>170-150*p;
+  const draw=()=>{const m=metrics();if(hist.length<=trees.length)hist[trees.length]=m.ll;
+    let s=`<rect x="62" y="20" width="398" height="150" fill="var(--bg)" stroke="var(--line)"/>`;
+    D.forEach(d=>s+=`<circle cx="${X(d.x)}" cy="${d.y?Y(1)+4+d.j*14:Y(0)-4-d.j*14}" r="3.2" fill="${d.y?'var(--bad)':'var(--muted)'}" opacity=".7"/>`);
+    let path="";for(let i=0;i<=200;i++){const x=i/200;path+=(i?"L":"M")+X(x).toFixed(1)+" "+Y(sig(F(x))).toFixed(1);}
+    s+=`<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="3"/>`;
+    if(trees.length){const t=trees[trees.length-1];s+=`<line x1="${X(t.th)}" x2="${X(t.th)}" y1="20" y2="170" stroke="var(--warn)" stroke-width="2" stroke-dasharray="5 4"/><text x="${X(t.th)+4}" y="34" font-size="11" style="fill:var(--warn)">tree ${trees.length} splits here</text>`;}
+    s+=`<text x="62" y="188" font-size="11" class="muted">largest wallet's share at 24 h →</text><text x="58" y="${Y(1)+4}" text-anchor="end" font-size="11" style="fill:var(--bad)">captured</text><text x="58" y="${Y(0)+4}" text-anchor="end" font-size="11" class="muted">safe</text><text x="250" y="14" text-anchor="middle" font-size="11.5" font-weight="600">predicted risk (blue line) after ${trees.length} trees</text>`;
+    const lx=v=>500+190*v/40,ly=v=>170-150*(v-0.2)/0.35;let lp="";hist.forEach((v,i)=>{if(v!=null)lp+=(lp?"L":"M")+lx(i).toFixed(1)+" "+ly(Math.max(.2,Math.min(.55,v))).toFixed(1);});
+    s+=`<rect x="500" y="20" width="190" height="150" fill="var(--bg)" stroke="var(--line)"/><path d="${lp}" fill="none" stroke="var(--good)" stroke-width="2.5"/><text x="595" y="14" text-anchor="middle" font-size="11.5" font-weight="600">error (log-loss) falls</text><text x="500" y="188" font-size="11" class="muted">trees →</text>`;
+    $("#bsvg").innerHTML=s;
+    $("#bOut").innerHTML=`<div class="stat"><b>${trees.length}</b><span>trees added</span></div><div class="stat"><b>${m.ll.toFixed(3)}</b><span>error (lower is better)</span></div><div class="stat"><b>${m.A.toFixed(3)}</b><span>AUC on these points</span></div>`;};
+  const stop=()=>{clearInterval(timer);timer=null;$("#bPlay").textContent="▶ Grow 40 trees";};
+  $("#bPlay").onclick=()=>{if(timer){stop();return;} $("#bPlay").textContent="❚❚ Pause"; timer=setInterval(()=>{if(trees.length>=40){stop();return;}addTree();draw();},260);};
+  $("#bOne").onclick=()=>{stop();addTree();draw();};
+  $("#bReset").onclick=()=>{stop();trees=[];hist=[];draw();};
+  stopOnLeave("b5",stop); draw();
+});
+
+/* (d) B4: the secret-code machine */
+chain("b4",()=>{
+  const addr="0x3fa8c2…e19b", dao="aave.eth", key="9f2c…(32 secret bytes)";
+  const real=SHA.hmacHex("demo-secret-key-held-by-controller",dao+"|"+addr).slice(0,32);
+  const type=(el,txt,cb)=>{let i=0;el.textContent="";const t=setInterval(()=>{el.textContent=txt.slice(0,++i);if(i>=txt.length){clearInterval(t);cb&&cb();}},REDUCED?0:28);};
+  const reset=()=>{$$("#hm .hchip").forEach(c=>c.classList.remove("feed","nokey"));$("#hmBox").classList.remove("busy");$("#hmOut").textContent="";$("#hmMsg").innerHTML="";};
+  const run=attacker=>{reset();const chips=$$("#hm .hchip");if(attacker)chips[2].classList.add("nokey");
+    chips.forEach((c,i)=>setTimeout(()=>c.classList.add("feed"),REDUCED?0:i*350));
+    setTimeout(()=>{$("#hmBox").classList.add("busy");$("#hmBoxLab").textContent=attacker?"SHA-256 (no key)":"HMAC-SHA256";
+      const out=attacker?SHA.hex(addr).slice(0,32):real;
+      setTimeout(()=>{$("#hmBox").classList.remove("busy");type($("#hmOut"),out,()=>{
+        $("#hmMsg").innerHTML=attacker?`<span class="pill no">no match</span> The published code is <span class="mono">${real.slice(0,12)}…</span>. Without the key the attacker gets something else, so the wallet stays hidden (S3.2: 0 matches).`
+          :`<span class="pill ok">published</span> This code goes into the dataset. The same wallet in another DAO gets a completely different code, because the DAO name is part of the input.`;});},REDUCED?0:700);},REDUCED?0:1200);};
+  $("#hmRun").onclick=()=>run(false); $("#hmAtk").onclick=()=>run(true);
+  $("#hmChips").innerHTML=`<span class="hchip">DAO: <b>${dao}</b></span><span class="hchip">wallet: <b class="mono">${addr}</b></span><span class="hchip key">🔑 key: <b>${key}</b></span>`;
+});
+
+/* (e) B8: walk a Merkle proof */
+chain("b8",()=>{
+  const R0=["P-1042 · 0.68 · HIGH · largest wallet holds 98%","P-1043 · 0.07 · LOW · many voters, no dominant wallet","P-1044 · 0.31 · MEDIUM · DAO often captured before","P-1045 · 0.12 · LOW · long history of open votes"];
+  const L=R0.map(t=>SHA.hex(t)),N=[SHA.hex(L[0]+L[1]),SHA.hex(L[2]+L[3])],ROOT=SHA.hex(N[0]+N[1]);
+  let step=-1,timer=null;
+  const pos={l:[95,285,475,665],n:[190,570],r:380};
+  const draw=()=>{const i=+$("#pwSel").value,tam=$("#pwTam").checked,rec=tam?R0[i].replace(/0\.\d\d/,m=>(+m+0.01).toFixed(2)):R0[i];
+    const leaf=SHA.hex(rec),sib=L[i^1],node=i<2?SHA.hex(i%2?sib+leaf:leaf+sib):SHA.hex(i%2?sib+leaf:leaf+sib),oth=N[i<2?1:0],root=i<2?SHA.hex(node+oth):SHA.hex(oth+node),ok=root===ROOT;
+    const on=(kind,j)=>{if(kind==="l")return step>=0&&j===i?"path":step>=1&&j===(i^1)?"sib":"";if(kind==="n")return step>=1&&j===(i>>1)?"path":step>=2&&j===((i>>1)^1)?"sib":"";return step>=2?"path":"";};
+    const box=(x,y,lab,h,c)=>`<g class="pw ${c}"><rect x="${x-78}" y="${y}" width="156" height="38" rx="8"/><text x="${x}" y="${y+16}" text-anchor="middle" font-size="11.5" font-weight="600">${lab}</text><text x="${x}" y="${y+30}" text-anchor="middle" font-size="10.5" class="mono muted">${h.slice(0,10)}…</text></g>`;
+    let s="";pos.l.forEach((x,j)=>s+=`<line x1="${pos.n[j>>1]}" y1="118" x2="${x}" y2="158" stroke="var(--line)" stroke-width="2"/>`);pos.n.forEach(x=>s+=`<line x1="${pos.r}" y1="42" x2="${x}" y2="80" stroke="var(--line)" stroke-width="2"/>`);
+    s+=box(pos.r,4,step>=3?(ok?"root ✓ matches":"root ✗ differs"):"root",step>=2?root:ROOT,on("r")+(step>=3?(ok?" good":" badn"):""));
+    pos.n.forEach((x,j)=>s+=box(x,80,"node "+(j+1),j===(i>>1)&&step>=1?node:N[j],on("n",j)));
+    pos.l.forEach((x,j)=>s+=box(x,158,"leaf "+(j+1),j===i&&step>=0?leaf:L[j],on("l",j)));
+    $("#pwSvg").innerHTML=s;
+    const lines=[`1. Hash the record you hold → leaf <span class="mono">${leaf.slice(0,10)}…</span>`,`2. Combine with its sibling leaf (from the proof) → node <span class="mono">${node.slice(0,10)}…</span>`,`3. Combine with the other node (from the proof) → root <span class="mono">${root.slice(0,10)}…</span>`,ok?`4. Compare with the root stored on the blockchain: <span class="pill ok">identical: the record is genuine</span>`:`4. Compare with the root stored on the blockchain: <span class="pill no">different: the record was changed</span>`];
+    $("#pwSteps").innerHTML=`<p class="note" style="margin:0 0 6px">Record: <span class="mono">${esc(rec)}</span>${tam?' <span class="pill no">probability +0.01</span>':''}</p>`+lines.slice(0,step+1).map(l=>`<div class="pwstep">${l}</div>`).join("");};
+  const stop=()=>{clearInterval(timer);timer=null;};
+  $("#pwPlay").onclick=()=>{stop();step=-1;draw();timer=setInterval(()=>{step++;draw();if(step>=3)stop();},1100);};
+  $("#pwSel").onchange=$("#pwTam").onchange=()=>{stop();step=-1;draw();};
+  stopOnLeave("b8",stop); draw();
+});
+
+/* (f) B9: calibration drift, animated */
+chain("b9",()=>{
+  const G=["Small","Medium","Large","Snapshot","Tally"],OBS=[.09648,.20050,.27787,.19634,.09315];
+  const PR={before:[.1295,.1819,.2069,.1747,.1491],fix1:[.1225,.1660,.1912,.1637,.0818],fix2:[.1142,.1890,.2405,.1834,.1516],fix3:[.1164,.1902,.2476,.1889,.1004]};
+  const lab={before:"Before",fix1:"Fix 1",fix2:"Fix 2",fix3:"Fix 3 (used)"};
+  $("#dvBtns").innerHTML=Object.keys(PR).map(k=>`<button data-k="${k}" style="flex:0 0 auto">${lab[k]}</button>`).join("")+`<button id="dvCycle" style="flex:0 0 auto">▶ Cycle through all</button>`;
+  $("#dv").innerHTML=G.map((g,i)=>`<div class="dvg"><div class="dvbars"><div class="dvb obs" style="height:${OBS[i]*400}px"><span>${Math.round(OBS[i]*1000)/10}%</span></div><div class="dvb pred" id="dvp${i}"><span></span></div></div><div class="dvlab">${g}</div><div class="dvgap" id="dvg${i}"></div></div>`).join("");
+  const set=k=>{$$("#dvBtns [data-k]").forEach(b=>b.classList.toggle("primary",b.dataset.k===k));
+    PR[k].forEach((p,i)=>{const e=$("#dvp"+i);e.style.height=(p*400)+"px";e.querySelector("span").textContent=(Math.round(p*1000)/10)+"%";const gap=Math.abs(p-OBS[i]);
+      $("#dvg"+i).innerHTML=`<span class="pill ${gap<=0.05?'ok':'no'}">gap ${gap.toFixed(3)}</span>`;});};
+  let cyc=null;const stop=()=>{clearInterval(cyc);cyc=null;};
+  $$("#dvBtns [data-k]").forEach(b=>b.onclick=()=>{stop();set(b.dataset.k);});
+  $("#dvCycle").onclick=()=>{stop();const ks=Object.keys(PR);let i=0;set(ks[0]);cyc=setInterval(()=>{i++;if(i>=ks.length){stop();return;}set(ks[i]);},1700);};
+  stopOnLeave("b9",stop); set("before");
+});
+
+/* (g) D2: batching bucket simulation */
+chain("d2",()=>{
+  const GT=96700,PER=136952,RATE=54.3/24; // decisions per hour (S6.7 workload); ~96,700 gas per batch tx (S6.7 average)
+  let W=6,run=null,T=0,q=[],blocks=[],dec=0,waits=0,txs=0;
+  const reset=()=>{T=0;q=[];blocks=[];dec=0;waits=0;txs=0;next=-Math.log(Math.random())/RATE;};
+  let next=0;
+  const draw=()=>{let s=`<rect x="20" y="40" width="170" height="130" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/><text x="105" y="32" text-anchor="middle" font-size="12" font-weight="600">waiting batch</text>`;
+    q.forEach((d,i)=>{const cx=34+(i%12)*12.5,cy=160-Math.floor(i/12)*12.5;s+=`<circle cx="${cx}" cy="${cy}" r="5" fill="var(--accent)"/>`;});
+    const frac=(T%W)/W;s+=`<rect x="20" y="178" width="${170*frac}" height="6" rx="3" fill="var(--warn)"/><text x="105" y="198" text-anchor="middle" font-size="11" class="muted">next flush in ${(W-(T%W)).toFixed(1)} h</text>`;
+    s+=`<path d="M200 105 L250 105" stroke="var(--muted)" stroke-width="2" marker-end="url(#bkar)"/><defs><marker id="bkar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>`;
+    s+=`<text x="470" y="32" text-anchor="middle" font-size="12" font-weight="600">blockchain: one transaction per batch</text>`;
+    blocks.slice(-24).forEach((b,i)=>{const x=260+(i%8)*55,y=40+Math.floor(i/8)*50;s+=`<g class="blk"><rect x="${x}" y="${y}" width="48" height="40" rx="6" fill="var(--good-soft)" stroke="var(--good)"/><text x="${x+24}" y="${y+18}" text-anchor="middle" font-size="12" font-weight="700">${b}</text><text x="${x+24}" y="${y+32}" text-anchor="middle" font-size="9.5" class="muted">decisions</text></g>`;});
+    $("#bkSvg").innerHTML=s;
+    const gpd=dec?txs*GT/dec:0,flushed=dec;
+    $("#bkOut").innerHTML=`<div class="stat"><b>${(T/24).toFixed(1)} d</b><span>simulated time</span></div><div class="stat"><b>${flushed?Math.round(gpd).toLocaleString():"–"}</b><span>gas per decision (vs ${PER.toLocaleString()} one by one)</span></div><div class="stat"><b>${flushed?(waits/flushed).toFixed(1)+" h":"–"}</b><span>average wait until provable</span></div>`;};
+  const stop=()=>{run=null;$("#bkPlay").textContent="▶ Run 3 days";};
+  const tick=now=>{if(!run)return;const dt=Math.min(.5,(now-run.last)/1000*6);run.last=now;const t1=T+dt;
+    while(next<=t1){q.push(next);next+=-Math.log(Math.random())/RATE;}
+    const fb=Math.floor(t1/W);if(fb>Math.floor(T/W)&&q.length){const ft=fb*W;q.forEach(a=>waits+=ft-a);dec+=q.length;txs++;blocks.push(q.length);q=[];}
+    T=t1;draw();if(T>=72){stop();return;}raf(tick);};
+  $("#bkPlay").onclick=()=>{if(run){stop();return;} if(T>=72)reset(); $("#bkPlay").textContent="❚❚ Pause"; run={last:performance.now()};raf(tick);};
+  $("#bkW").onchange=e=>{W=+e.target.value;stop();reset();draw();};
+  stopOnLeave("d2",stop); reset(); draw();
+});
+
+/* (h) hover definitions for key terms, once per lesson */
+const TIPS={"ROC-AUC":"How well a model ranks risky proposals above safe ones. 0.5 = guessing, 1.0 = perfect.","AUC":"How well a model ranks risky proposals above safe ones. 0.5 = guessing, 1.0 = perfect.","HHI":"Herfindahl index: sum of squared power shares. Near 1 = one wallet has everything.","HMAC":"A fingerprint made with a secret key, so outsiders can't recompute it.","SHAP":"Splits one prediction into how much each input pushed the risk up or down.","LIME":"A second explanation method, used to cross-check SHAP.","Merkle root":"One fingerprint that stands for a whole batch of fingerprints.","gas":"The unit of computing cost on Ethereum.","differential privacy":"Adding carefully sized random noise so no single person changes a published number noticeably.","calibration":"Whether a '30% risk' really comes true about 30% of the time.","persistence rule":"The no-AI baseline: whoever leads now will lead at the end.","Nakamoto coefficient":"The fewest wallets that together hold a majority.","pseudonym":"The secret per-DAO code that replaces a wallet address.","salt":"Random data added before hashing, so short predictable messages can't be guessed.","Sepolia":"Ethereum's public test network.","Cohen's kappa":"Agreement between two screeners, corrected for agreement by luck.","PRISMA":"The standard way to report a systematic review: every record counted, every exclusion explained.","frozen model":"The model exactly as built, not retrained, when tested on new data.","drift":"The world changing between training and use.","XGBoost":"A model made of many small decision trees, each fixing the previous ones' mistakes.","smart contract":"A program stored and run on a blockchain.","temporal split":"Train on older data, choose on the next period, test on the newest.","Design Science Research":"Build an artifact to solve a problem, then evaluate it.","governance capture":"One wallet holds more than half of all voting power cast on a proposal."};
+function addTips(){
+  const keys=Object.keys(TIPS).sort((a,b)=>b.length-a.length);
+  const re=new RegExp("\\b("+keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")\\b","i");
+  $$(".lesson").forEach(sec=>{const used=new Set();
+    sec.querySelectorAll("p, li, td").forEach(el=>{
+      if(el.closest(".widget,.quiz,.pager,.flip,pre,.jpanel,table#glossT,.home-grid,.hero"))return;
+      const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest("a,code,button,.gt,.pill,.chip,b.mono")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+      const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+      nodes.forEach(n=>{const m=n.nodeValue.match(re);if(!m)return;const key=keys.find(k=>k.toLowerCase()===m[1].toLowerCase());const canon=TIPS[key]===TIPS["AUC"]?"AUC":key;
+        if(used.has(canon))return;used.add(canon);
+        const after=n.splitText(m.index);after.nodeValue=after.nodeValue.slice(m[1].length);
+        const sp=document.createElement("span");sp.className="gt";sp.tabIndex=0;sp.textContent=m[1];sp.dataset.tip=TIPS[key];n.parentNode.insertBefore(sp,after);});
+    });});
+}
+
 /* ---------- boot ---------- */
-addPlain(); addStrips(); ["flow","code","o1a","o1b","o1c"].forEach(k=>renderQuiz($(`.quiz[data-quiz="${k}"]`),QUIZ[k]));
+addPlain(); addStrips(); addTips(); ["flow","code","o1a","o1b","o1c"].forEach(k=>renderQuiz($(`.quiz[data-quiz="${k}"]`),QUIZ[k]));
 renderNav(); buildPagers(); show();
 </script>
 </body>
